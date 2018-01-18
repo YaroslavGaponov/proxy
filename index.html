@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script>
+            const Electron = require('electron');
+            Electron.ipcRenderer.on('log', (event, message) => {
+                const textarea = document.getElementById('log')
+                textarea.value += message + '\r\n';
+                setTimeout( _ => {
+                    textarea.scrollTop = textarea.scrollHeight;
+                }, 0);
+            })
+            function start() {
+                Electron.ipcRenderer.send('cmd','start', document.getElementById('port').value);
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+            <input id="port" type="text" placeholder="port" value="8080" required>
+            <button name="start" onclick="start()">Start</button>
+        </div>
+        <div>
+            <textarea id="log" disabled=true cols="80" rows="30"></textarea>
+        </div>
+    </body>
+</html>
